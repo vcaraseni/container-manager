@@ -11,6 +11,7 @@ This is a simple container manager that can be used to manage containers. It is 
 - ...
 
 Example of usage:
+
 ![Example](https://github.com/vcaraseni/container-manager/blob/main/example.png?raw=true)
 
 ## TODO List:
