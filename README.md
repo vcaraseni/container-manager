@@ -10,5 +10,8 @@ This is a simple container manager that can be used to manage containers. It is 
 - Rotating packages policy: to allow packages to be rotated to fit better within the container.
 - ...
 
+Example of usage:
+![Example](https://github.com/vcaraseni/container-manager/blob/main/example.png?raw=true)
+
 ## TODO List:
 - [ ] cover with tests;
