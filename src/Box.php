@@ -2,18 +2,21 @@
 
 namespace src;
 
-class Container
+class Box
 {
-    public string $type;
     public float $width;
     public float $height;
     public float $length;
 
-    public function __construct(string $type, float $width, float $height, float $length)
+    public function __construct(float $width, float $height, float $length)
     {
-        $this->type = $type;
         $this->width = $width;
         $this->height = $height;
         $this->length = $length;
+    }
+
+    public function getVolume(): float
+    {
+        return $this->width * $this->height * $this->length;
     }
 }

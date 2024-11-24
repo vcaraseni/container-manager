@@ -6,48 +6,57 @@ class ContainerManager
 {
     private array $containers;
 
-    public function __construct() {
-        // todo future improvement: make this dynamic - take from a config file
-        $this->containers = [
-            new Container('40ft', 234.8, 238.44, 1203.1),
-            new Container('10ft', 234.8, 238.44, 279.4)
-        ];
+    public function __construct(array $containers)
+    {
+        $this->containers = $containers;
     }
 
-    public function calculateContainers(array $packages): array {
-    $results = [];
+    public function calculate(array $boxes): array
+    {
+        $containerUsage = [];
 
-    foreach ($packages as $packageData) {
-        $requiredContainers = [];
-        $remainingPackages = $packageData['quantity'];
+        foreach ($boxes as $transportId => $transportBoxes) {
+            $containerCount = [];
 
-        foreach ($this->containers as $container) {
-            while ($remainingPackages > 0) {
-                $containerCopy = clone $container;
-                $currentFit = 0;
+            foreach ($this->containers as $container) {
+                $containerCount[$container->type] = 0;
+            }
 
-                for ($i = 0; $i < $remainingPackages; $i++) {
-                    $package = new Package(
-                        $packageData['width'],
-                        $packageData['height'],
-                        $packageData['length']
-                    );
+            while (!empty($transportBoxes)) {
+                foreach ($this->containers as $container) {
+                    if ($this->fitBoxesInContainer($container, $transportBoxes)) {
+                        $containerCount[$container->type]++;
 
-                    if ($containerCopy->addPackage($package)) {
-                        $currentFit++;
-                    } else {
                         break;
                     }
                 }
+            }
 
-                $remainingPackages -= $currentFit;
-                $requiredContainers[] = $containerCopy;
+            $containerUsage[$transportId] = $containerCount;
+        }
+
+        return $containerUsage;
+    }
+
+    private function fitBoxesInContainer(Container $container, array &$boxes): bool
+    {
+        $remainingWidth = $container->width;
+        $remainingHeight = $container->height;
+        $remainingLength = $container->length;
+
+        $fittedBoxes = [];
+
+        foreach ($boxes as $key => $box) {
+            if ($box->width <= $remainingWidth && $box->height <= $remainingHeight && $box->length <= $remainingLength) {
+                $remainingWidth -= $box->width;
+                $remainingHeight -= $box->height;
+                $remainingLength -= $box->length;
+
+                $fittedBoxes[] = $box;
+                unset($boxes[$key]);
             }
         }
 
-        $results[] = count($requiredContainers);
+        return !empty($fittedBoxes);
     }
-
-    return $results;
-}
 }

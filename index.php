@@ -1,30 +1,34 @@
 <?php
 
+use src\Box;
+use src\Container;
 use src\ContainerManager;
 
-// Packages data
-$packages = [
-    [
-        ['quantity' => 27, 'width' => 78, 'height' => 79, 'length' => 93],
-    ],
-    [
-        ['quantity' => 24, 'width' => 30, 'height' => 60, 'length' => 90],
-        ['quantity' => 33, 'width' => 75, 'height' => 100, 'length' => 200],
-    ],
-    [
-        ['quantity' => 10, 'width' => 80, 'height' => 100, 'length' => 200],
-        ['quantity' => 25, 'width' => 60, 'height' => 80, 'length' => 150],
-    ]
+// Container types
+$containers = [
+    new Container("40ft", 234.8, 238.44, 1203.1),
+    new Container("10ft", 234.8, 238.44, 279.4)
 ];
-$manager = new ContainerManager();
 
-foreach ($packages as $index => $package) {
-    echo 'Transport ' . ($index + 1) . ":\n";
+$calculator = new ContainerManager($containers);
 
-    $results = $manager->calculateContainers($package);
-    foreach ($results as $result) {
-        echo ' - Containers needed: ' . $result . "\n";
+$transportBoxes = [
+    'Transport 1' => array_fill(0, 27, new Box(78, 79, 93)),
+    'Transport 2' => array_merge(
+        array_fill(0, 24, new Box(30, 60, 90)),
+        array_fill(0, 33, new Box(75, 100, 200))
+    ),
+    'Transport 3' => array_merge(
+        array_fill(0, 10, new Box(80, 100, 200)),
+        array_fill(0, 25, new Box(60, 80, 150))
+    )
+];
+
+$result = $calculator->calculate($transportBoxes);
+
+foreach ($result as $transportId => $counts) {
+    echo "$transportId:\n";
+    foreach ($counts as $type => $count) {
+        echo "- $type: $count\n";
     }
-
-    echo "\n";
 }
