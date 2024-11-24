@@ -6,8 +6,9 @@ class ContainerManager
 {
     private array $containers;
 
-    public function __construct(array $containers)
-    {
+    public function __construct(
+        array $containers,
+    ) {
         $this->containers = $containers;
     }
 

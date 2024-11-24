@@ -9,8 +9,12 @@ class Container
     public float $height;
     public float $length;
 
-    public function __construct(string $type, float $width, float $height, float $length)
-    {
+    public function __construct(
+        string $type,
+        float $width,
+        float $height,
+        float $length,
+    ) {
         $this->type = $type;
         $this->width = $width;
         $this->height = $height;
