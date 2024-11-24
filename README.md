@@ -10,3 +10,6 @@ This is a simple container manager that can be used to manage containers. It is 
 - User interface and visualization: to provide a UI to interact with the container manager and visualize its arrangement.
 - Rotating packages policy: to allow packages to be rotated to fit better within the container.
 - ...
+
+## TODO List:
+- [ ] cover with tests;
